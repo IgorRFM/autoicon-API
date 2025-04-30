@@ -14,6 +14,16 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    .AddEnvironmentVariables();
+
+var cloudinarySettings = builder.Configuration.GetSection("Cloudinary");
+var cloudName = cloudinarySettings["CloudName"];
+var apiKey = cloudinarySettings["ApiKey"];
+var apiSecret = cloudinarySettings["ApiSecret"];
+
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("Cloudinary"));
 builder.Services.AddSingleton(sp =>
 {
@@ -41,6 +51,8 @@ builder.Services.AddRateLimiter(options =>
     options.RejectionStatusCode = 429; // Too Many Requests
 });
 
+
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -58,3 +70,4 @@ public class CloudinarySettings
     public string ApiKey { get; set; }
     public string ApiSecret { get; set; }
 }
+
