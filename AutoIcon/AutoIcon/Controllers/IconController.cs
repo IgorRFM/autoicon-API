@@ -31,6 +31,8 @@ public class IconController : ControllerBase
             File = new FileDescription(request.Image.FileName, request.Image.OpenReadStream()),
             PublicId = request.Uuid.ToString(),
             Folder = "autoicon",
+            Overwrite = true,
+            Invalidate = true,
             // Crop quadrado centralizado
             Transformation = new Transformation()
                 .Height(300)
